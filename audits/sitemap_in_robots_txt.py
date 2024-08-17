@@ -2,6 +2,7 @@
 
 from malcom import AuditBase
 from malcom.metadata.architecture_metadata import ARCHITECTURE_METADATA
+from dourado import sitemap_indicated_on_robots
 
 class SitemapInRobotsTxtAudit(AuditBase):
     def __init__(self):
@@ -15,8 +16,8 @@ class SitemapInRobotsTxtAudit(AuditBase):
         )
 
     def run(self, website):        
-        placeholder_variable = False
-        if placeholder_variable:  # Check for 'sitemap' in robots.txt
+        sitemap_indicated = sitemap_indicated_on_robots(website_url=website)
+        if sitemap_indicated:  # Check for 'sitemap' in robots.txt
             self.passed = True
         else:
             self.passed = False

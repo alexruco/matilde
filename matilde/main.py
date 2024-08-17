@@ -17,11 +17,11 @@ from audits.no_follow_pages_without_internal_links import NoFollowPagesWithoutIn
 def run_audits(website):
     audits = [
         PresenceOfRobotsTxtAudit(),
-        SitemapInRobotsTxtAudit(),
-        FollowablePagesWithInternalLinksAudit(),
-        AllFollowablePagesInSitemapAudit(),
-        FollowablePagesMaxCrawlDepthAudit(),
-        NoFollowPagesNotInSitemapsAudit(),
+        #SitemapInRobotsTxtAudit(),
+        #FollowablePagesWithInternalLinksAudit(),
+        #AllFollowablePagesInSitemapAudit(),
+        #FollowablePagesMaxCrawlDepthAudit(),
+        #NoFollowPagesNotInSitemapsAudit(),
         NoFollowPagesWithoutInternalLinksAudit()
     ]
 
