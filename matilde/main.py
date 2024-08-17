@@ -3,14 +3,26 @@
 import sys
 import os
 
-# Append the parent directory of 'audits' to the system path
+# Ensure the parent directory is in the path so that 'audits' can be found
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from audits import PresenceOfRobotsTxtAudit #, SitemapInRobotsTxtAudit
+from audits.presence_of_robots_txt import PresenceOfRobotsTxtAudit
+from audits.sitemap_in_robots_txt import SitemapInRobotsTxtAudit
+from audits.followable_pages_with_internal_links import  FollowablePagesWithInternalLinksAudit
+from audits.all_followable_pages_in_sitemap import AllFollowablePagesInSitemapAudit
+from audits.followable_pages_max_crawl_depth import FollowablePagesMaxCrawlDepthAudit
+from audits.no_follow_pages_not_in_sitemaps import NoFollowPagesNotInSitemapsAudit
+from audits.no_follow_pages_without_internal_links import NoFollowPagesWithoutInternalLinksAudit
 
 def run_audits(website):
     audits = [
         PresenceOfRobotsTxtAudit(),
+        SitemapInRobotsTxtAudit(),
+        FollowablePagesWithInternalLinksAudit(),
+        AllFollowablePagesInSitemapAudit(),
+        FollowablePagesMaxCrawlDepthAudit(),
+        NoFollowPagesNotInSitemapsAudit(),
+        NoFollowPagesWithoutInternalLinksAudit()
     ]
 
     results = {}
@@ -25,11 +37,9 @@ def run_audits(website):
 
 if __name__ == "__main__":
     # Example website data
-    website_data = {
-        "robots.txt": True  # Or False, depending on whether robots.txt is present
-    }
+    website_url = "mysitefaster.com"  # This URL will be used by the dourado package
     
-    results = run_audits(website_data)
+    results = run_audits(website_url)
     for audit_name, result in results.items():
         print(f"Audit: {audit_name}")
         print(f"Passed: {result['passed']}")

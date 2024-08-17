@@ -5,7 +5,7 @@ This package contains all the individual audits for the Matilde website architec
 Each module in this package implements a specific audit by extending the AuditBase class from Malcom.
 """
 
-from .presence_of_robots_txt import PresenceOfRobotsTxtAudit
+from audits.presence_of_robots_txt import PresenceOfRobotsTxtAudit
 '''from .sitemap_in_robots_txt import SitemapInRobotsTxtAudit
 from .all_followable_pages_in_sitemap import AllFollowablePagesInSitemapAudit
 from .followable_pages_with_internal_links import FollowablePagesWithInternalLinksAudit
