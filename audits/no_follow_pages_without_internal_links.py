@@ -1,10 +1,11 @@
 # audits/no_follow_pages_without_internal_links.py
 
+import sqlite3
 from malcom import AuditBase
 from malcom.metadata.architecture_metadata import ARCHITECTURE_METADATA
 
 class NoFollowPagesWithoutInternalLinksAudit(AuditBase):
-    def __init__(self):
+    def __init__(self, db_path):
         metadata = ARCHITECTURE_METADATA["no_follow_pages_without_internal_links"]
         super().__init__(
             name=metadata["name"],
@@ -13,14 +14,34 @@ class NoFollowPagesWithoutInternalLinksAudit(AuditBase):
             fix_methods=metadata["fix_methods"],
             use_cases=metadata["use_cases"]
         )
+        self.db_path = db_path
 
     def run(self, website):
-        # Placeholder logic
-        no_follow_pages_with_internal_links = ["page5.html", "page6.html"]  # Example no-followable pages with internal links
-        issues = ["some issue", "some other issue"]
+        # Connect to the SQLite database
+        connection = sqlite3.connect(self.db_path)
+        cursor = connection.cursor()
 
-        if no_follow_pages_with_internal_links:
+        try:
+            # Query to find no-follow pages (robots_follow = False) that have internal followable links
+            query = """
+            SELECT url FROM tb_pages
+            WHERE robots_follow = 0 AND (referring_pages IS NOT NULL AND referring_pages != '')
+            """
+
+            cursor.execute(query)
+            pages_with_internal_links = cursor.fetchall()
+
+            if pages_with_internal_links:
+                self.passed = False
+                urls = [row[0] for row in pages_with_internal_links]
+                self.issues.append(f"The following no-followable pages have internal followable links: {', '.join(urls)}")
+            else:
+                self.passed = True
+
+        except sqlite3.Error as e:
             self.passed = False
-            self.issues.append("The following no-followable pages have internal followable links: " + ", ".join(no_follow_pages_with_internal_links))
-        else:
-            self.passed = True
+            self.issues.append(f"Database error occurred: {e}")
+        
+        finally:
+            cursor.close()
+            connection.close()

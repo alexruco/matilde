@@ -27,9 +27,9 @@ def run_audits(website):
         SitemapInRobotsTxtAudit(),
         AllFollowablePagesInSitemapAudit("db_websites.db"),
         NoFollowPagesNotInSitemapsAudit("db_websites.db"),
-        #NoFollowPagesWithoutInternalLinksAudit(),
-        #FollowablePagesWithInternalLinksAudit(),
-        #FollowablePagesMaxCrawlDepthAudit(),
+        NoFollowPagesWithoutInternalLinksAudit("db_websites.db"),
+        #FollowablePagesWithInternalLinksAudit("db_websites.db"),
+        #FollowablePagesMaxCrawlDepthAudit("db_websites.db"),
 
 
     ]
