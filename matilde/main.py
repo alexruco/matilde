@@ -19,14 +19,19 @@ from bertha import recrawl_website
 
 
 def run_audits(website):
+    
+    #pages_data = recrawl_website(website)
+    
     audits = [
         PresenceOfRobotsTxtAudit(),
         SitemapInRobotsTxtAudit(),
+        AllFollowablePagesInSitemapAudit("db_websites.db"),
+        NoFollowPagesNotInSitemapsAudit("db_websites.db"),
+        #NoFollowPagesWithoutInternalLinksAudit(),
         #FollowablePagesWithInternalLinksAudit(),
-        #AllFollowablePagesInSitemapAudit(),
         #FollowablePagesMaxCrawlDepthAudit(),
-        #NoFollowPagesNotInSitemapsAudit(),
-        #NoFollowPagesWithoutInternalLinksAudit()
+
+
     ]
 
     results = {}
@@ -41,13 +46,11 @@ def run_audits(website):
 
 if __name__ == "__main__":
     # Example website data
-    website_url = "mysitefaster.com"  # This URL will be used by the dourado package
+    website_url = "https://calcitrin.vivamelhor.pt"  # This URL will be used by the dourado package
     
     results = run_audits(website_url)
+
     
-    website_data = recrawl_website(website_url)
-    
-    print(website_data)
     for audit_name, result in results.items():
         print(f"Audit: {audit_name}")
         print(f"Passed: {result['passed']}")

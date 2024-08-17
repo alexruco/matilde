@@ -1,10 +1,11 @@
 # audits/all_followable_pages_in_sitemap.py
 
+import sqlite3
 from malcom import AuditBase
 from malcom.metadata.architecture_metadata import ARCHITECTURE_METADATA
 
 class AllFollowablePagesInSitemapAudit(AuditBase):
-    def __init__(self):
+    def __init__(self, db_path):
         metadata = ARCHITECTURE_METADATA["all_followable_pages_in_sitemap"]
         super().__init__(
             name=metadata["name"],
@@ -13,14 +14,34 @@ class AllFollowablePagesInSitemapAudit(AuditBase):
             fix_methods=metadata["fix_methods"],
             use_cases=metadata["use_cases"]
         )
+        self.db_path = db_path
 
     def run(self, website):
-        # Placeholder logic
-        all_followable_pages_in_sitemap = ["page1.html", "page2.html"]  # Example followable pages not in sitemap
-        issues = ["some issue", "some other issue"]
-        
-        if all_followable_pages_in_sitemap:
+        # Connect to the SQLite database
+        connection = sqlite3.connect(self.db_path)
+        cursor = connection.cursor()
+
+        try:
+            # Query to find followable pages (robots_follow = True) with empty sitemaps
+            query = """
+            SELECT url FROM tb_pages
+            WHERE robots_follow = 1 AND (sitemaps IS NULL OR sitemaps = '')
+            """
+
+            cursor.execute(query)
+            pages_without_sitemaps = cursor.fetchall()
+
+            if pages_without_sitemaps:
+                self.passed = False
+                urls = [row[0] for row in pages_without_sitemaps]
+                self.issues.append(f"The following followable pages are not listed in any sitemap: {', '.join(urls)}")
+            else:
+                self.passed = True
+
+        except sqlite3.Error as e:
             self.passed = False
-            self.issues.append("The following followable pages are not listed in any sitemap: " + ", ".join(all_followable_pages_in_sitemap))
-        else:
-            self.passed = True
+            self.issues.append(f"Database error occurred: {e}")
+        
+        finally:
+            cursor.close()
+            connection.close()
