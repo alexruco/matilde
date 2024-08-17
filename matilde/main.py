@@ -14,15 +14,19 @@ from audits.followable_pages_max_crawl_depth import FollowablePagesMaxCrawlDepth
 from audits.no_follow_pages_not_in_sitemaps import NoFollowPagesNotInSitemapsAudit
 from audits.no_follow_pages_without_internal_links import NoFollowPagesWithoutInternalLinksAudit
 
+from bertha import recrawl_website
+
+
+
 def run_audits(website):
     audits = [
         PresenceOfRobotsTxtAudit(),
-        #SitemapInRobotsTxtAudit(),
+        SitemapInRobotsTxtAudit(),
         #FollowablePagesWithInternalLinksAudit(),
         #AllFollowablePagesInSitemapAudit(),
         #FollowablePagesMaxCrawlDepthAudit(),
         #NoFollowPagesNotInSitemapsAudit(),
-        NoFollowPagesWithoutInternalLinksAudit()
+        #NoFollowPagesWithoutInternalLinksAudit()
     ]
 
     results = {}
@@ -40,6 +44,10 @@ if __name__ == "__main__":
     website_url = "mysitefaster.com"  # This URL will be used by the dourado package
     
     results = run_audits(website_url)
+    
+    website_data = recrawl_website(website_url)
+    
+    print(website_data)
     for audit_name, result in results.items():
         print(f"Audit: {audit_name}")
         print(f"Passed: {result['passed']}")
