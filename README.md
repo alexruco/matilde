@@ -1,52 +1,61 @@
-# My Python Module 🚀
+# Matilde 🚀
 
-Welcome to **My Python Module**! This project is designed to [brief description of what your module does].
+Welcome to **Matilde**! This project is designed to perform comprehensive website audits, ensuring that site architecture, SEO practices, and robots.txt configurations are optimized and consistent across your web properties.
 
 ## Features ✨
 
-- **Feature 1**: Explain the first feature. 🎉
-- **Feature 2**: Explain the second feature. 🔥
-- **Feature 3**: Explain the third feature. 🌟
+- **Internal Links Audits**: Analyze internal links to ensure that all pages are properly linked, have no redirects, and that no-follow pages are isolated from followable ones. 🎉
+- **Sitemaps Audits**: Verify that all important pages are included in your sitemaps, sitemaps are correctly referenced in robots.txt, and no pages listed in sitemaps are unavailable or redirecting. 🔥
+- **Robots.txt Audits**: Ensure the presence and correctness of your robots.txt file, including proper sitemap references, to control how search engines crawl your site. 🌟
+
 
 ## Installation 💻
 
 You can install the package via pip:
 
 ```bash
-pip install my_python_module
-Usage 📚
+pip install matilde
+```
+
+
+---
+
+## Usage 📚
 
 Here's a quick example to get you started:
-<!--
+
 ```python
-from my_python_module import module
+from matilde import run_audits
 
 # Example usage
-result = module.some_function(5, 10)
-print(result)
-```
--->
-Documentation 📖
+website_url = "https://example.com"
+passed, failed, found_pages = run_audits(website_url)
 
-Documentation is available at [link to documentation].
-Running Tests 🧪
+print("Passed Audits:", passed)
+print("Failed Audits:", failed)
+print("Found Pages:", found_pages)
+
+```
+
+## Running Tests 🧪
 
 To run the tests, you can use the unittest module or pytest.
 
-bash
-
+```bash
 python -m unittest discover tests
 # or
 pytest
+```
 
 ## Contributing 🤝
 
 We welcome contributions from the community! Here’s how you can get involved:
 
-1. **Report Bugs**: If you find a bug, please open an issue [here](https://github.com/yourusername/my_python_module/issues).
+1. **Report Bugs**: If you find a bug, please open an issue [here](https://github.com/alexruco/matilde/issues).
 2. **Suggest Features**: We’d love to hear your ideas! Suggest new features by opening an issue.
 3. **Submit Pull Requests**: Ready to contribute? Fork the repo, make your changes, and submit a pull request. Please ensure your code follows our coding standards and is well-documented.
 4. **Improve Documentation**: Help us improve our documentation. Feel free to make edits or add new content.
+
 
 ### How to Submit a Pull Request
 
@@ -59,4 +68,7 @@ We welcome contributions from the community! Here’s how you can get involved:
 ## License 📄
 
 This project is licensed under the MIT License. Feel free to use, modify, and distribute this software in accordance with the terms outlined in the [LICENSE](LICENSE) file.
+
+
+
 
