@@ -4,7 +4,7 @@ import sqlite3
 from malcom import AuditBase
 from malcom.metadata.architecture_metadata import ARCHITECTURE_METADATA
 
-class FollowablePagesWithInternalLinksAudit(AuditBase):
+class AllFollowablePagesWithInternalLinksAudit(AuditBase):
     def __init__(self, db_path):
         metadata = ARCHITECTURE_METADATA["followable_pages_with_internal_links"]
         super().__init__(

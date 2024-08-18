@@ -6,17 +6,25 @@ import os
 # Ensure the parent directory is in the path so that 'audits' can be found
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+from bertha import recrawl_website
+
+#Internal Links audits imports
+from audits.internal_links.all_followable_pages_with_internal_links import  AllFollowablePagesWithInternalLinksAudit
+from audits.internal_links.no_follow_pages_without_internal_links import NoFollowPagesWithoutInternalLinksAudit
+from audits.internal_links.no_redirected_pages_on_internal_links import NoRedirectedPagesOnInternalLinksAudit
+from audits.internal_links.no_unavailable_pages_on_internal_links import NoUnavailablePagesOnInternalLinksAudit
+from audits.internal_links.pages_max_crawl_depth import PagesMaxCrawlDepthAudit
+
+#Sitempas audits imports
+from audits.sitemaps.all_followable_pages_in_sitemaps import AllFollowablePagesInSitemapsAudit
+from audits.sitemaps.no_follow_pages_not_in_sitemaps import NoFollowPagesNotInSitemapsAudit
+from audits.sitemaps.no_redirected_pages_on_sitemaps import NoRedirectedPagesOnSitemapsAudit
+from audits.sitemaps.no_unavailable_pages_on_sitemaps import NoUnavailablePagesOnSitemapsAudit
+
+#Robots.txt audits imports
 from audits.robots.presence_of_robots_txt import PresenceOfRobotsTxtAudit
 from audits.robots.sitemap_in_robots_txt import SitemapInRobotsTxtAudit
-from audits.internal_links.all_followable_pages_with_internal_links import  FollowablePagesWithInternalLinksAudit
-from audits.sitemaps.all_followable_pages_in_sitemaps import AllFollowablePagesInSitemapAudit
-from audits.internal_links.pages_max_crawl_depth import FollowablePagesMaxCrawlDepthAudit
-from audits.sitemaps.no_follow_pages_not_in_sitemaps import NoFollowPagesNotInSitemapsAudit
-from audits.internal_links.pages_max_crawl_depth import FollowablePagesMaxCrawlDepthAudit
-from audits.internal_links.no_follow_pages_without_internal_links import NoFollowPagesWithoutInternalLinksAudit
-from audits.sitemaps.no_unavailable_pages_on_sitemaps import NoUnavailablePagesOnSitemapsAudit
-from audits.internal_links.no_unavailable_pages_on_internal_links import NoUnavailablePagesOnInternalLinksAudit
-from bertha import recrawl_website
+
 
 
 
@@ -26,25 +34,23 @@ def run_audits(website):
     
     audits = [
         
-        AllFollowablePagesInSitemapAudit("db_websites.db"),
-        
-        FollowablePagesMaxCrawlDepthAudit("db_websites.db"),
-        
-        FollowablePagesWithInternalLinksAudit("db_websites.db"),
-        
-        NoFollowPagesNotInSitemapsAudit("db_websites.db"),
-
+        AllFollowablePagesWithInternalLinksAudit("db_websites.db"),
         NoFollowPagesWithoutInternalLinksAudit("db_websites.db"),
-
+        NoRedirectedPagesOnInternalLinksAudit("db_websites.db"),
+        NoUnavailablePagesOnInternalLinksAudit("db_websites.db"),
+        PagesMaxCrawlDepthAudit("db_websites.db"),
+        
+        #Sitemaps Audits
+        AllFollowablePagesInSitemapsAudit("db_websites.db"),
         NoFollowPagesNotInSitemapsAudit("db_websites.db"),
-        
-        PresenceOfRobotsTxtAudit(),
-        
+        NoRedirectedPagesOnSitemapsAudit("db_websites.db"),
+        NoFollowPagesNotInSitemapsAudit("db_websites.db"),
+        NoUnavailablePagesOnSitemapsAudit("db_websites.db"),
+
+        #Robots Audits
+        PresenceOfRobotsTxtAudit(),        
         SitemapInRobotsTxtAudit(),
         
-        NoUnavailablePagesOnSitemapsAudit("db_websites.db"),
-        
-        NoUnavailablePagesOnInternalLinksAudit("db_websites.db"),
     ]
 
     results = {}
