@@ -6,7 +6,7 @@ from malcom.metadata.architecture_metadata import ARCHITECTURE_METADATA
 
 class AllFollowablePagesInSitemapsAudit(AuditBase):
     def __init__(self, db_path):
-        metadata = ARCHITECTURE_METADATA["all_followable_pages_in_sitemap"]
+        metadata = ARCHITECTURE_METADATA["all_followable_pages_in_sitemaps"]
         super().__init__(
             name=metadata["name"],
             importance=metadata["importance"],
