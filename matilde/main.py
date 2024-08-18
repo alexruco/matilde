@@ -2,6 +2,7 @@
 
 import sys
 import os
+import sqlite3
 
 # Ensure the parent directory is in the path so that 'audits' can be found
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -22,24 +23,23 @@ from audits.sitemaps.no_unavailable_pages_on_sitemaps import NoUnavailablePagesO
 
 from malcom.metadata.architecture_metadata import ARCHITECTURE_METADATA
 
-def run_audits(website):
+def run_audits(website, db_path="db_websites.db"):
     audits = [
-        AllFollowablePagesWithInternalLinksAudit("db_websites.db"),
-        PagesMaxCrawlDepthAudit("db_websites.db"),
-        NoFollowPagesWithoutInternalLinksAudit("db_websites.db"),
-        NoRedirectedPagesOnInternalLinksAudit("db_websites.db"),
-        NoUnavailablePagesOnInternalLinksAudit("db_websites.db"),
+        AllFollowablePagesWithInternalLinksAudit(db_path),
+        PagesMaxCrawlDepthAudit(db_path),
+        NoFollowPagesWithoutInternalLinksAudit(db_path),
+        NoRedirectedPagesOnInternalLinksAudit(db_path),
+        NoUnavailablePagesOnInternalLinksAudit(db_path),
         PresenceOfRobotsTxtAudit(),
         SitemapInRobotsTxtAudit(),
-        AllFollowablePagesInSitemapsAudit("db_websites.db"),
-        NoFollowPagesNotInSitemapsAudit("db_websites.db"),
-        NoRedirectedPagesOnSitemapsAudit("db_websites.db"),
-        NoUnavailablePagesOnSitemapsAudit("db_websites.db"),
+        AllFollowablePagesInSitemapsAudit(db_path),
+        NoFollowPagesNotInSitemapsAudit(db_path),
+        NoRedirectedPagesOnSitemapsAudit(db_path),
+        NoUnavailablePagesOnSitemapsAudit(db_path),
     ]
 
     passed_audits = []
     failed_audits = {}
-    found_pages = set()  # Use a set to avoid duplicates
 
     for audit in audits:
         audit.run(website)
@@ -56,12 +56,28 @@ def run_audits(website):
                 },
                 "issues": audit.get_issues(),
             }
-        
-        # Assuming each audit class has a method `get_found_pages` that returns a list of pages it analyzed
-        if hasattr(audit, "get_found_pages"):
-            found_pages.update(audit.get_found_pages())
 
-    return passed_audits, failed_audits, list(found_pages)
+    found_pages = get_all_found_pages(db_path)
+
+    return passed_audits, failed_audits, found_pages
+
+def get_all_found_pages(db_path):
+    """Fetch all pages found in the database."""
+    connection = sqlite3.connect(db_path)
+    cursor = connection.cursor()
+
+    try:
+        cursor.execute("SELECT url FROM tb_pages")
+        pages = cursor.fetchall()
+        found_pages = [page[0] for page in pages]
+    except sqlite3.Error as e:
+        print(f"Database error occurred: {e}")
+        found_pages = []
+    finally:
+        cursor.close()
+        connection.close()
+
+    return found_pages
 
 if __name__ == "__main__":
     # Example website data
