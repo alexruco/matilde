@@ -24,7 +24,7 @@ class NoFollowPagesNotInSitemapsAudit(AuditBase):
         try:
             # Query to find no-follow pages (robots_follow = False) that have sitemaps listed
             query = """
-            SELECT url FROM tb_pages
+            SELECT url, sitemaps FROM tb_pages
             WHERE robots_follow = 0 AND (sitemaps IS NOT NULL AND sitemaps != '')
             """
 
@@ -33,8 +33,8 @@ class NoFollowPagesNotInSitemapsAudit(AuditBase):
 
             if pages_in_sitemaps:
                 self.passed = False
-                urls = [row[0] for row in pages_in_sitemaps]
-                self.issues.append(f"The following no-followable pages are incorrectly listed in sitemaps: {', '.join(urls)}")
+                for url, sitemaps in pages_in_sitemaps:
+                    self.issues.append(f"Page '{url}' is incorrectly listed in the following sitemaps: {sitemaps}")
             else:
                 self.passed = True
 
