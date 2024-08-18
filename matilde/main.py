@@ -12,6 +12,7 @@ from audits.followable_pages_with_internal_links import  FollowablePagesWithInte
 from audits.all_followable_pages_in_sitemap import AllFollowablePagesInSitemapAudit
 from audits.followable_pages_max_crawl_depth import FollowablePagesMaxCrawlDepthAudit
 from audits.no_follow_pages_not_in_sitemaps import NoFollowPagesNotInSitemapsAudit
+from audits.followable_pages_max_crawl_depth import FollowablePagesMaxCrawlDepthAudit
 from audits.no_follow_pages_without_internal_links import NoFollowPagesWithoutInternalLinksAudit
 
 from bertha import recrawl_website
@@ -20,18 +21,25 @@ from bertha import recrawl_website
 
 def run_audits(website):
     
-    #pages_data = recrawl_website(website)
+    pages_data = recrawl_website(website)
     
     audits = [
-        PresenceOfRobotsTxtAudit(),
-        SitemapInRobotsTxtAudit(),
+        
         AllFollowablePagesInSitemapAudit("db_websites.db"),
+        
+        FollowablePagesMaxCrawlDepthAudit("db_websites.db"),
+        
+        FollowablePagesWithInternalLinksAudit("db_websites.db"),
+        
         NoFollowPagesNotInSitemapsAudit("db_websites.db"),
+
         NoFollowPagesWithoutInternalLinksAudit("db_websites.db"),
-        #FollowablePagesWithInternalLinksAudit("db_websites.db"),
-        #FollowablePagesMaxCrawlDepthAudit("db_websites.db"),
 
-
+        NoFollowPagesNotInSitemapsAudit("db_websites.db"),
+        
+        PresenceOfRobotsTxtAudit(),
+        
+        SitemapInRobotsTxtAudit(),
     ]
 
     results = {}
@@ -46,7 +54,7 @@ def run_audits(website):
 
 if __name__ == "__main__":
     # Example website data
-    website_url = "https://calcitrin.vivamelhor.pt"  # This URL will be used by the dourado package
+    website_url = "https://orca.ricarela.com"  # This URL will be used by the dourado package
     
     results = run_audits(website_url)
 

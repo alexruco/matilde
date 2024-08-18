@@ -5,7 +5,7 @@ __pycache__/
 future_audits/
 # C extensions
 *.so
-
+*.db
 # Distribution / packaging
 .Python
 build/
