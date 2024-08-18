@@ -39,6 +39,7 @@ def run_audits(website):
 
     passed_audits = []
     failed_audits = {}
+    found_pages = set()  # Use a set to avoid duplicates
 
     for audit in audits:
         audit.run(website)
@@ -55,14 +56,18 @@ def run_audits(website):
                 },
                 "issues": audit.get_issues(),
             }
+        
+        # Assuming each audit class has a method `get_found_pages` that returns a list of pages it analyzed
+        if hasattr(audit, "get_found_pages"):
+            found_pages.update(audit.get_found_pages())
 
-    return passed_audits, failed_audits
+    return passed_audits, failed_audits, list(found_pages)
 
 if __name__ == "__main__":
     # Example website data
     website_url = "https://example.com"
     
-    passed, failed = run_audits(website_url)
+    passed, failed, found_pages = run_audits(website_url)
     
     print("Passed Audits:")
     for audit in passed:
@@ -78,3 +83,7 @@ if __name__ == "__main__":
         print("   Issues:")
         for issue in details['issues']:
             print(f"     - {issue}")
+    
+    print("\nFound Pages:")
+    for page in found_pages:
+        print(f" - {page}")
