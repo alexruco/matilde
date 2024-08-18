@@ -6,7 +6,7 @@ from malcom.metadata.architecture_metadata import ARCHITECTURE_METADATA
 
 class AllFollowablePagesWithInternalLinksAudit(AuditBase):
     def __init__(self, db_path):
-        metadata = ARCHITECTURE_METADATA["followable_pages_with_internal_links"]
+        metadata = ARCHITECTURE_METADATA["all_followable_pages_with_internal_links"]
         super().__init__(
             name=metadata["name"],
             importance=metadata["importance"],
