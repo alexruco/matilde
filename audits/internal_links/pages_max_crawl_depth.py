@@ -6,7 +6,7 @@ from malcom.metadata.architecture_metadata import ARCHITECTURE_METADATA
 
 class PagesMaxCrawlDepthAudit(AuditBase):
     def __init__(self, db_path):
-        metadata = ARCHITECTURE_METADATA["followable_pages_max_crawl_depth"]
+        metadata = ARCHITECTURE_METADATA["pages_max_crawl_depth"]
         super().__init__(
             name=metadata["name"],
             importance=metadata["importance"],
