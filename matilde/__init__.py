@@ -20,7 +20,16 @@ from .sitemaps import (
     NoUnavailablePagesOnSitemapsAudit,
 )
 
+from .utils import(
+    cleanup_database,
+    get_all_found_pages
+)
 __all__ = [
+    
+    #utils
+    "cleanup_database",
+    "get_all_found_pages",
+    
     # Internal Links Audits
     "AllFollowablePagesWithInternalLinksAudit",
     "PagesMaxCrawlDepthAudit",

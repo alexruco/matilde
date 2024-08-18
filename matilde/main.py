@@ -2,8 +2,7 @@
 
 import sys
 import os
-import sqlite3
-
+from utils import get_all_found_pages, cleanup_database
 # Ensure the parent directory is in the path so that 'audits' can be found
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -61,29 +60,13 @@ def run_audits(website, db_path="db_websites.db"):
 
     return passed_audits, failed_audits, found_pages
 
-def get_all_found_pages(db_path):
-    """Fetch all pages found in the database."""
-    connection = sqlite3.connect(db_path)
-    cursor = connection.cursor()
-
-    try:
-        cursor.execute("SELECT url FROM tb_pages")
-        pages = cursor.fetchall()
-        found_pages = [page[0] for page in pages]
-    except sqlite3.Error as e:
-        print(f"Database error occurred: {e}")
-        found_pages = []
-    finally:
-        cursor.close()
-        connection.close()
-
-    return found_pages
 
 if __name__ == "__main__":
     # Example website data
     website_url = "https://example.com"
-    
-    passed, failed, found_pages = run_audits(website_url)
+    db_path = "db_websites.db"
+
+    passed, failed, found_pages = run_audits(website_url, db_path)
     
     print("Passed Audits:")
     for audit in passed:
@@ -103,3 +86,6 @@ if __name__ == "__main__":
     print("\nFound Pages:")
     for page in found_pages:
         print(f" - {page}")
+
+    # Clean up the database file after the audits are complete
+    cleanup_database(db_path)
