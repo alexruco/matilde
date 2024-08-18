@@ -1,17 +1,40 @@
-# my_python_module/__init__.py
+# audits/__init__.py
 
-"""
-Matilde
-================
+from .internal_links import (
+    AllFollowablePagesWithInternalLinksAudit,
+    PagesMaxCrawlDepthAudit,
+    NoFollowPagesWithoutInternalLinksAudit,
+    NoRedirectedPagesOnInternalLinksAudit,
+    NoUnavailablePagesOnInternalLinksAudit,
+)
 
-Perform website audits
-"""
+from .robots import (
+    PresenceOfRobotsTxtAudit,
+    SitemapInRobotsTxtAudit,
+)
 
-__version__ = "0.1.0"
-
-from .main import run_audits
-
+from .sitemaps import (
+    AllFollowablePagesInSitemapsAudit,
+    NoFollowPagesNotInSitemapsAudit,
+    NoRedirectedPagesOnSitemapsAudit,
+    NoUnavailablePagesOnSitemapsAudit,
+)
 
 __all__ = [
-    "run_audits",
+    # Internal Links Audits
+    "AllFollowablePagesWithInternalLinksAudit",
+    "PagesMaxCrawlDepthAudit",
+    "NoFollowPagesWithoutInternalLinksAudit",
+    "NoRedirectedPagesOnInternalLinksAudit",
+    "NoUnavailablePagesOnInternalLinksAudit",
+    
+    # Robots Audits
+    "PresenceOfRobotsTxtAudit",
+    "SitemapInRobotsTxtAudit",
+    
+    # Sitemaps Audits
+    "AllFollowablePagesInSitemapsAudit",
+    "NoFollowPagesNotInSitemapsAudit",
+    "NoRedirectedPagesOnSitemapsAudit",
+    "NoUnavailablePagesOnSitemapsAudit",
 ]

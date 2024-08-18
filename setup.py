@@ -1,31 +1,33 @@
-# setup.py
-
 from setuptools import setup, find_packages
 
 setup(
-    name="my_python_module",  # Name of your package
-    version="0.1.0",  # Version of your package
-    author="Your Name",  # Author name
-    author_email="your.email@example.com",  # Author email
-    description="A brief description of what your module does.",  # Short description of the package
-    long_description=open("README.md").read(),  # Long description from the README file
-    long_description_content_type="text/markdown",  # Content type for the long description
-    url="https://github.com/yourusername/my_python_module",  # URL for the project (e.g., GitHub repository)
-    packages=find_packages(),  # Automatically find packages in the directory
-    classifiers=[  # Classifiers help users find your project by categorizing it
+    name="matilde",  # Name of your package
+    version="0.1.0",  # Initial version of your package
+    description="A website audit tool to ensure quality and consistency in site architecture and SEO",  # Short description
+    long_description=open("README.md").read(),  # This will pull the content of your README file
+    long_description_content_type="text/markdown",  # This specifies that your long description is in markdown
+    author="Alex Ruco",  # Your name
+    author_email="alex@ruco.pt",  # Your email
+    url="https://github.com/alexruco/matilde",  # URL of your project repository
+    packages=find_packages(),  # Automatically find all packages and sub-packages
+    install_requires=[
+        "requests>=2.25.1",  # List of dependencies your package needs
+        "beautifulsoup4>=4.9.3",
+        "lxml>=4.6.3",
+    ],
+    classifiers=[
         "Programming Language :: Python :: 3",
-        "License :: OSI Approved :: MIT License",
+        "License :: OSI Approved :: MIT License",  # MIT License
         "Operating System :: OS Independent",
+        "Development Status :: 3 - Alpha",  # Adjust this as your project matures
+        "Intended Audience :: Developers",
+        "Topic :: Software Development :: Quality Assurance",
     ],
-    python_requires='>=3.6',  # Specify the Python version compatibility
-    install_requires=[  # List of dependencies
-        "numpy",
-        "requests",
-        # Add other dependencies as needed
-    ],
-    entry_points={  # Entry points for executable scripts
+    python_requires=">=3.6",  # Specify the minimum Python version required
+    include_package_data=True,  # Include package data as specified in MANIFEST.in or through the package_data argument
+    entry_points={
         "console_scripts": [
-            "my_module=my_python_module.module:main_function",
+            "matilde=matilde.main:run_audits",  # Example of how to make a script executable from the command line
         ],
     },
 )
