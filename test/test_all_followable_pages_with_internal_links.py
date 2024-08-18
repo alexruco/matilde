@@ -1,5 +1,6 @@
 # tests/test_all_followable_pages_with_internal_links.py
 
+import sqlite3
 from audits.internal_links.all_followable_pages_with_internal_links import AllFollowablePagesWithInternalLinksAudit
 
 def test_all_followable_pages_with_internal_links(setup_database):
@@ -23,8 +24,9 @@ def test_all_followable_pages_with_internal_links(setup_database):
     audit = AllFollowablePagesWithInternalLinksAudit(db_path)
     audit.run("https://example.com")
 
+    # Corrected assertion
     assert audit.get_result() == False  # Should fail because there are no internal links
-    assert "The following followable pages are not listed in any sitemap" in audit.get_issues()[0]
+    assert "The following followable pages do not have any internal followable links:" in audit.get_issues()[0]
 
     cursor.close()
     connection.close()
