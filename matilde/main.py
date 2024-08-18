@@ -2,9 +2,12 @@
 
 import sys
 import os
-from utils import get_all_found_pages, cleanup_database
+import sqlite3
+
 # Ensure the parent directory is in the path so that 'audits' can be found
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from utils import cleanup_database, get_all_found_pages
 
 from audits.internal_links.all_followable_pages_with_internal_links import AllFollowablePagesWithInternalLinksAudit
 from audits.internal_links.pages_max_crawl_depth import PagesMaxCrawlDepthAudit
@@ -39,6 +42,7 @@ def run_audits(website, db_path="db_websites.db"):
 
     passed_audits = []
     failed_audits = {}
+    found_pages = get_all_found_pages(db_path)
 
     for audit in audits:
         audit.run(website)
@@ -56,36 +60,14 @@ def run_audits(website, db_path="db_websites.db"):
                 "issues": audit.get_issues(),
             }
 
-    found_pages = get_all_found_pages(db_path)
-
     return passed_audits, failed_audits, found_pages
 
-
 if __name__ == "__main__":
-    # Example website data
-    website_url = "https://example.com"
+    # Example usage of the function
+    website_url = "https://mysitefaster.com"
     db_path = "db_websites.db"
 
     passed, failed, found_pages = run_audits(website_url, db_path)
-    
-    print("Passed Audits:")
-    for audit in passed:
-        print(f" - {audit}")
-    
-    print("\nFailed Audits:")
-    for audit, details in failed.items():
-        print(f" - {audit}")
-        print(f"   Importance: {details['metadata']['importance']}")
-        print(f"   Measurement Criteria: {details['metadata']['measurement_criteria']}")
-        print(f"   Fix Methods: {details['metadata']['fix_methods']}")
-        print(f"   Use Cases: {details['metadata']['use_cases']}")
-        print("   Issues:")
-        for issue in details['issues']:
-            print(f"     - {issue}")
-    
-    print("\nFound Pages:")
-    for page in found_pages:
-        print(f" - {page}")
 
     # Clean up the database file after the audits are complete
     cleanup_database(db_path)

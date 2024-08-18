@@ -23,7 +23,7 @@ def cleanup_database(db_path):
     """Delete the database file."""
     try:
         os.remove(db_path)
-        print(f"Database file '{db_path}' deleted successfully.")
+        #print(f"Database file '{db_path}' deleted successfully.")
     except OSError as e:
         print(f"Error deleting database file: {e}")
 
