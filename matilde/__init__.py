@@ -1,6 +1,6 @@
 # audits/__init__.py
 
-from .internal_links import (
+from audits.internal_links import (
     AllFollowablePagesWithInternalLinksAudit,
     PagesMaxCrawlDepthAudit,
     NoFollowPagesWithoutInternalLinksAudit,
@@ -8,12 +8,12 @@ from .internal_links import (
     NoUnavailablePagesOnInternalLinksAudit,
 )
 
-from .robots import (
+from audits.robots import (
     PresenceOfRobotsTxtAudit,
     SitemapInRobotsTxtAudit,
 )
 
-from .sitemaps import (
+from audits.sitemaps import (
     AllFollowablePagesInSitemapsAudit,
     NoFollowPagesNotInSitemapsAudit,
     NoRedirectedPagesOnSitemapsAudit,
