@@ -1,6 +1,6 @@
 # audits/__init__.py
 
-from matilde.internal_links import (
+from audits.internal_links import (
     AllFollowablePagesWithInternalLinksAudit,
     NoFollowPagesWithoutInternalLinksAudit,
     NoRedirectedPagesOnInternalLinksAudit,
@@ -8,12 +8,12 @@ from matilde.internal_links import (
     PagesMaxCrawlDepthAudit,    
 )
 
-from matilde.robots import (
+from audits.robots import (
     PresenceOfRobotsTxtAudit,
     SitemapInRobotsTxtAudit,
 )
 
-from matilde.sitemaps import (
+from audits.sitemaps import (
     AllFollowablePagesInSitemapsAudit,
     NoFollowPagesNotInSitemapsAudit,
     NoRedirectedPagesOnSitemapsAudit,
